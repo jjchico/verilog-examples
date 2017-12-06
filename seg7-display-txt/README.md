@@ -132,19 +132,19 @@ seg = 0000000_0000100_0001000_1100000
 1. Download the *seg7-display.v* file at least. You may want to download the whole folder/repo to have the test benches.
 
 1. Include *seg7-display.v* in your design.
-```
-`include "seg7-display.v"
-```
+   ```
+   `include "seg7-display.v"
+   ```
 1. Place the *seg7_display* or *seg7_display_hex* module in your design. Connect the input of the module to the signal you want to display. E.g.
-```
-seg7_display my_display (.seg(seven_segments_enconded_signal));
-...
-seg7_display_hex my_hex_display (.hex(binary_number));
-```
+   ```
+   seg7_display my_display (.seg(seven_segments_enconded_signal));
+   ...
+   seg7_display_hex my_hex_display (.hex(binary_number));
+   ```
 1. If you want the module to operate synchronously (with the rising edge of a clock signal), enable synchronous operation by defining the *SEG7_DISPLAY_SYNC* macro at the beginning of your file.
-```
-`define SEG7_DISPLAY_SYNC
-```
+   ```
+   `define SEG7_DISPLAY_SYNC
+   ```
 
 ## Examples
 
@@ -243,7 +243,7 @@ $ vvp a.out
 
 ## Authors
 
-  * **Jorge Juan**
+  * **Jorge Juan-Chico**
 
 ## Licence
 
