@@ -1,8 +1,7 @@
 // Design: display_ctrl
 // Description: Four-digit, 7-segment display controller.
-// Author: Jorge Juan <jjchico@dte.us.es>
-// Copyright Universidad de Sevilla, Spain
-// Date: 13-11-2011
+// Author: Jorge Juan <jjchico@gmail.com>
+// Date: 13-11-2011 (original)
 
 ////////////////////////////////////////////////////////////////////////////////
 // This file is free software: you can redistribute it and/or modify it under //
@@ -21,7 +20,16 @@
 */
 
 module display_ctrl #(
-    parameter cdbits = 18       // clock divider bits
+    parameter cdbits = 18,      // clock divider bits
+                                // Clock freq.  bits
+                                //       50MHz  18
+                                //      100MHz  19
+                                //      200MHz  20
+                                //      400MHz  21
+                                //      800MHz  22    etc.
+    parameter hex = 0           // output hexadecimal format
+                                //   0 - decimal only (display invalid as "-")
+                                //   1 - hexadecimal (0123456789AbCdEf)
     )(
     input wire ck,              // system clock
     input wire [3:0] x3,        // display digits, from left to right
@@ -73,12 +81,12 @@ module display_ctrl #(
         4'h7: seg = 7'b0001111;
         4'h8: seg = 7'b0000000;
         4'h9: seg = 7'b0000100;
-        4'ha: seg = 7'b0001000;
-        4'hb: seg = 7'b1100000;
-        4'hc: seg = 7'b0110001;
-        4'hd: seg = 7'b1000010;
-        4'he: seg = 7'b0110000;
-        default: seg = 7'b0111000; // F
+        4'ha: seg = hex ? 7'b0001000 : 7'b1111110;
+        4'hb: seg = hex ? 7'b1100000 : 7'b1111110;
+        4'hc: seg = hex ? 7'b0110001 : 7'b1111110;
+        4'hd: seg = hex ? 7'b1000010 : 7'b1111110;
+        4'he: seg = hex ? 7'b0110000 : 7'b1111110;
+        default: seg = hex ? 7'b0111000 : 7'b1111110; // F
         endcase
 
     // Decimal point decoder
