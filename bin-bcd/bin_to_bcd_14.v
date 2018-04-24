@@ -1,8 +1,8 @@
 // Design: bin_to_bcd
 // Module: bin_to_bcd_13
 // Description: Binary to BCD converter using the double dabble algorithm.
-// Author: Jorge Juan <jjchico@gmail.com>
-// Date: 02-12-2011 (original)
+// Author: Jorge Juan-Chico <jjchico@gmail.com>
+// Date: 24-04-2018 (original)
 
 ////////////////////////////////////////////////////////////////////////////////
 // This file is free software: you can redistribute it and/or modify it under //
@@ -12,26 +12,37 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 //
-// 13-bit binary to BCD converter, 4 BCD digits, 0 -- 8191
+// Binary to BCD 14-bit converter, 4 BCD digits, 0 -- 9999
 //
-// See
-//   http://en.wikipedia.org/wiki/Double_dabble
-//   http://www.classiccmp.org/cpmarchives/cpm/mirrors/
+// Binary input: bin[13:0]
+//
+// BCD output
+//   dec[15:12] thousands
+//   dec[11:8]  hundreds
+//   dec[7:4]   tens
+//   dec[3:0]   units
+//
+// Overflow (bin > 9999) is not checked!
+//
+// This is a combinational implementation of the double dabble algorithm.
+// See:
+//   * http://en.wikipedia.org/wiki/Double_dabble
+//   * http://www.classiccmp.org/cpmarchives/cpm/mirrors/
 //     cbfalconer.home.att.net/download/dubldabl.txt
 
-module bin_to_bcd_13 (
-    input wire [12:0] bin,   // binary input
+module bin_to_bcd_14 (
+    input wire [13:0] bin,   // binary input
     output reg [15:0] dec    // BCD output
     );
 
-    reg [12:0] b;     // local copy of bin
+    reg [13:0] b;     // local copy of bin
     integer i;        // loop counter
 
     always @* begin
         b = bin;
-        dec = 13'd0;
+        dec = 16'd0;
 
-        for (i=0; i<12; i=i+1) begin
+        for (i=0; i<13; i=i+1) begin
             // shift left dec and b
             {dec,b} = {dec,b} << 1;
             if (dec[3:0] > 4)        // check units
@@ -40,8 +51,9 @@ module bin_to_bcd_13 (
                 dec[7:4] = dec[7:4] + 4'd3;
             if (dec[11:8] > 4)       // check hundreds
                 dec[11:8] = dec[11:8] + 4'd3;
-            // thousands are never > 4
+            if (dec[15:12] > 4)       // check thousands
+                dec[15:12] = dec[15:12] + 4'd3;
         end
         {dec,b} = {dec,b} << 1;  // shift once more
     end
-endmodule // bin_to_bcd_13
+endmodule // bin_to_bcd_14

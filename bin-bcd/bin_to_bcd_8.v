@@ -14,9 +14,17 @@
 //
 // 8-bit binary to BCD converter, 2 1/2 BCD digits, 0 -- 255
 //
-// See
-//   http://en.wikipedia.org/wiki/Double_dabble
-//   http://www.classiccmp.org/cpmarchives/cpm/mirrors/
+// Binary input: bin[7:0]
+//
+// BCD output
+//   d[9:8]  hundreds
+//   d[7:4]  tens
+//   d[3:0]  units
+//
+// This is a combinational implementation of the double dabble algorithm.
+// See:
+//   * http://en.wikipedia.org/wiki/Double_dabble
+//   * http://www.classiccmp.org/cpmarchives/cpm/mirrors/
 //     cbfalconer.home.att.net/download/dubldabl.txt
 
 module bin_to_bcd_8 (
