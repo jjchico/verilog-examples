@@ -1,5 +1,7 @@
 # Verilog Examples
 
+**Repository moved to: https://gitlab.com/jjchico/verilog-examples**
+
 Various, hopefully useful, Verilog examples.
 
 ## Introduction
